@@ -41,8 +41,8 @@ Please note that when neither -f or -c option is selected, the links are lost an
 
 Add the following lines to your /home/username/.config/ranger/rc.conf to make this script work from within Ranger fm:
 
-- map \uz shell getOptsTry.sh -cfz %%s
-- map \us shell getOptsTry.sh -cf %%s
+- map \uz shell uploader.sh -cfz %%s
+- map \us shell uploader.sh -cf %%s
 - map \uv shell vim /tmp/uploader/fileList.txt
 
 The first one maps \uz to "upload selected as zip, copy link to clipboard"
