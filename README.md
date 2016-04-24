@@ -1,6 +1,7 @@
 # uploader.sh
 
 A simple .sh script for uploading files to transfer.sh
+
 This script is intended to simplify the workflow whenever the need arises to share multiple files quickly. A standard approach would be to
 select them, right click -> compress, then select the zip, open a file sharing site or ftp client or similar, copy the link to the clipboard, paste...
 
@@ -40,9 +41,9 @@ Please note that when neither -f or -c option is selected, the links are lost an
 
 Add the following lines to your /home/username/.config/ranger/rc.conf to make this script work from within Ranger fm:
 
-map \uz shell getOptsTry.sh -cfz %%s
-map \us shell getOptsTry.sh -cf %%s
-map \uv shell vim /tmp/uploader/fileList.txt
+- map \uz shell getOptsTry.sh -cfz %%s
+- map \us shell getOptsTry.sh -cf %%s
+- map \uv shell vim /tmp/uploader/fileList.txt
 
 The first one maps \uz to "upload selected as zip, copy link to clipboard"
 Second one maps \us to "upload files separately, copy links as separate lines to clipboard"
