@@ -59,33 +59,26 @@ SAVEIFS=$IFS
 IFS="
 "
 
-NL="
-"
 
 if [ $zip -eq 1 ] && [ $multipleFiles -eq 1 ]; then
         for i
         do
             echo "$i"
-            fileList=$(echo "$fileList" \""$i"\")
+            fileList=$(echo "$fileList" "$i")
         done
         echo $(echo tempArchive.zip "$fileList")
-        eval "zip $(echo tempArchive.zip "$fileList")"
+        zip $(echo tempArchive.zip "$fileList")
         returnString=$(curl --upload-file ./tempArchive.zip https://transfer.sh/archive.zip)
 else
     for i
     do
-        #a=$(echo $i|sed -n "s/\s/\\ /pIg")
-        fileList=$(echo "$fileList" -F filedata=@\""$i"\")
+        fileList=$(echo "$fileList" -F filedata=@"$i" )
     done
-    fileList=$(echo "-i" "$fileList" https://transfer.sh)
+    fileList=$(echo "-i""$fileList" https://transfer.sh)
     echo "$fileList"
-    echo $fileList
-    IFS=$SAVEIFS
-    #returnString=$(curl  $(echo $fileList))
-    returnString=$(eval "curl $(echo $fileList)")
+    returnString=$(curl $fileList)
 fi
-
-IFS=$SAVEIFS
+IFS=$SAvEIFS
 
 #we have to grep the urls from the output now!
 returnString=$(echo  "$returnString"|grep "^https://.*$")
