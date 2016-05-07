@@ -51,7 +51,7 @@ And finally the third one effectively means "view history of uploaded files, in 
 
 ## Known limitations:
 
-- No support for spaces in filenames yet. I have to fix this soon.
+- -No support for spaces in filenames yet. I have to fix this soon.- (FIXED)
 - The format of the list of uploaded files should be changed to allow for easier copying using Vim.
 - I need to handle the situation when no input arguments are present.
 
