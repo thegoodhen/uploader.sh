@@ -17,11 +17,12 @@ zip=0
 writeToFile=0
 trimLines=0
 clipboard=0
+zipName="tempArchive.zip"
 
-while getopts "zftch" opt; do
+while getopts "zft:chn:" opt; do
     case "$opt" in
     h)  
-        echo "usage: script -(zftc) files-to-upload; z=zip? f=write links to temp file? t (lineNum)-limit max tempfile lines? c-copy links to clip"
+        echo "usage: script -(zftc) files-to-upload; z=zip? n (name) archive name f=write links to temp file? t (lineNum)-limit max tempfile lines? c-copy links to clip"
         exit 0
         ;;
     z)
@@ -32,6 +33,9 @@ while getopts "zftch" opt; do
     t)  trimLines=$OPTARG
         ;;
     c)  clipboard=1
+        ;;
+    n) zipName=$OPTARG
+        echo "$zipName"
         ;;
     esac
 done
@@ -61,15 +65,18 @@ IFS="
 
 NL="
 "
+#fix extension (append if not present) (actually you can comment it out and it will still work, as "zip" is really smart :3)
+zipName=$(echo "$zipName"|sed "s/\.zip//g")".zip"
 
+echo "$zipName"
 if [ $zip -eq 1 ] && [ $multipleFiles -eq 1 ]; then
         for i
         do
             echo "$i"
             fileList=$(echo "$fileList" \""$i"\")
         done
-        echo $(echo tempArchive.zip "$fileList")
-        eval "zip $(echo tempArchive.zip "$fileList")"
+        echo $(echo "$zipName" "$fileList")
+        eval "zip $(echo "$zipName" "$fileList")"
         returnString=$(curl --upload-file ./tempArchive.zip https://transfer.sh/archive.zip)
 else
     for i
