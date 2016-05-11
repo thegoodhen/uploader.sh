@@ -14,15 +14,16 @@ OPTIND=1         # Reset in case getopts has been used previously in the shell.
 output_file=""
 verbose=0
 zip=0
+keep=0
 writeToFile=0
 trimLines=0
 clipboard=0
 zipName="tempArchive.zip"
 
-while getopts "zft:chn:" opt; do
+while getopts "zkft:chn:" opt; do
     case "$opt" in
     h)  
-        echo "usage: script -(zftc) files-to-upload; z=zip? n (name) archive name f=write links to temp file? t (lineNum)-limit max tempfile lines? c-copy links to clip"
+        echo "usage: script -(zftc) files-to-upload; z=zip? n (name) archive name k-keep the temporary archive? f=write links to temp file? t (lineNum)-limit max tempfile lines? c-copy links to clip"
         exit 0
         ;;
     z)
@@ -36,6 +37,8 @@ while getopts "zft:chn:" opt; do
         ;;
     n) zipName=$OPTARG
         echo "$zipName"
+        ;;
+    k) keep=1
         ;;
     esac
 done
@@ -77,7 +80,11 @@ if [ $zip -eq 1 ] && [ $multipleFiles -eq 1 ]; then
         done
         echo $(echo "$zipName" "$fileList")
         eval "zip $(echo "$zipName" "$fileList")"
-        returnString=$(curl --upload-file ./tempArchive.zip https://transfer.sh/archive.zip)
+        returnString=$(curl --upload-file ./"$zipName" https://transfer.sh/"$zipName")
+        #Be kinda careful about the next lines
+        if [ $keep -eq 0 ]; then
+            rm "$zipName"
+        fi
 else
     for i
     do
@@ -109,5 +116,4 @@ fi
 if [ "$trimLines" != "0" ]; then
     head -n "$trimLines" /tmp/uploader/fileList.txt > /tmp/uploader/fileList.txt
 fi
-
 
